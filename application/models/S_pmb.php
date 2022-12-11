@@ -1,12 +1,14 @@
 <?php
 
+use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 use LDAP\Result;
 
 class S_pmb extends CI_Model {
 
         public function getpendaftar ()
         {
-                return  $this->db->get('pendaftar')->result_array();
+          
+            return  $this->db->get('pendaftar')->result_array();
                  
         }
 
@@ -22,9 +24,16 @@ class S_pmb extends CI_Model {
 
         public function getprestasi()
         {
+            
+            $this->db->group_by('jenis_prestasi');
             return  $this->db->get('prestasi')->result_array();
         }
 
+        public  function getbank()
+        {       
+            return  $this->db->get('bank')->result_array();
+        }
+        
         public function getjumlahpendaftar($idprodi){
             $result = 0;
             $this->db->where('id_prodi1',$idprodi);
@@ -44,21 +53,11 @@ class S_pmb extends CI_Model {
             return $result;
         }
         
-        public function gettotalprestasi($id_jalur){
+        public function gettotalprestasi($jenis_prestasi){
             $result = 0;
-            $this->db->where('id_jalur ',$id_jalur);
-            $data = $this->db->get('pendaftar')->result_array();
-            if(!empty($data)) {
-                $result = count($data);   
-            }
-            return $result;
+            $this->db->where('jenis_prestasi',$jenis_prestasi);
 
-        }
-
-        public function getjalurmasuk($id_jalur) {
-            $result = 0;
-            $this->db->where('id_jalur',$id_jalur);
-            $data = $this->db->get('pendaftar')->result_array();
+            $data = $this->db->get('prestasi')->result_array();
             if(!empty($data)) {
                 $result = count($data);   
             }
@@ -66,7 +65,39 @@ class S_pmb extends CI_Model {
         }
 
         
-    
 
-}
+        public function getjalurmasuk($id_jalur) {
+            $result = 0;
+            $this->db->where('id_jalur',$id_jalur);
+
+            $data = $this->db->get('pendaftar')->result_array();
+            if(!empty($data)) {
+                $result = count($data);   
+            }
+            return $result;
+        }
+
+        public function getdaftarbank($id_bank){
+            $result = 0;
+            $this->db->where('id_bank',$id_bank);
+            $data = $this->db->get('pendaftar')->result_array();
+            if(!empty($data)) {
+                $result = count($data);   
+            }
+            return $result;
+        }
+        
+        public function getbayar($is_bayar){
+            $result = 0;
+            $this->db->where('is_bayar',$is_bayar);
+
+            $data = $this->db->get('pendaftar')->result_array();
+            if(!empty($data)) {
+                $result = count($data);   
+            }
+            return $result;
+        }
+    
+    }
+
 ?>
