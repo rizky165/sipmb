@@ -111,7 +111,7 @@
                 <ul class="treeview-menu">
                     <li><a class="treeview-item" href="<?= site_url('index/pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Pendaftar</a></li>
                     <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Prestasi</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/jalur_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Jalur Masuk</a></li>
+                    <li><a class="treeview-item" href="<?= site_url('index/ r_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Jalur Masuk</a></li>
                     <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i> Bank</a></li>
                 </ul>
             </li>
@@ -130,11 +130,8 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col">
                 <div id="grafik"></div>
-            </div>
-            <div class="col-md-6">
-                <div id="grafik2"></div>
             </div>
         </div>
         <div></div>
@@ -185,8 +182,8 @@
         // Data retrieved from https://netmarketshare.com/
         // // Build the chart
         // let serial = series.push(json[0]);
-        getgrafikpie('grafik', <?= $grafik ?>, 'Grafik Pendaftar Pilihan Prodi1');
-        getgrafikpie('grafik2', <?= $grafik2 ?>, 'Grafik Pendaftar Pilihan Prodi2');
+        getgrafikpie('grafik', <?= $grafik ?>, 'Grafik Pembayaran Pendaftar');
+    
 
         function getgrafikpie(selector, data, title) {
             Highcharts.chart(selector, {
@@ -200,7 +197,7 @@
                     text: title
                 },
                 tooltip: {
-                    pointFormat: '{series.name}: <b>{point.y:.1f}Pendaftar</b>'
+                    pointFormat: '{series.name}: <b>{point.y:.1f}Pembayaran</b>'
                 },
                 accessibility: {
                     point: {

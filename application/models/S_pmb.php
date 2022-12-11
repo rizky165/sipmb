@@ -31,6 +31,7 @@ class S_pmb extends CI_Model {
 
         public  function getbank()
         {       
+            
             return  $this->db->get('bank')->result_array();
         }
         
@@ -80,6 +81,7 @@ class S_pmb extends CI_Model {
         public function getdaftarbank($id_bank){
             $result = 0;
             $this->db->where('id_bank',$id_bank);
+            $this->db->where('nominal_bayar',150000);
             $data = $this->db->get('pendaftar')->result_array();
             if(!empty($data)) {
                 $result = count($data);   

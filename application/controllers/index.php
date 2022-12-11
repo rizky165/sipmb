@@ -120,7 +120,7 @@ class Index extends CI_Controller
 		$jumlah = null;
 		foreach ($bank as $key => $b) {
 			$bank[$key]['jumlah'] = $this->s_pmb->getdaftarbank($b['id_bank']);
-			$prodi[$key]['size'] = rand(10, 30);
+			$bank[$key]['size'] = rand(10, 30);
 		}
 
 		$hasil = null;
@@ -129,12 +129,16 @@ class Index extends CI_Controller
 				"name" 		=> $bk['nama_bank'],
 				"y"	   		=> $bk['jumlah'],
 			];
-
 		}
 
 		$data['jalur']     		   = $bank;
 		$data['grafik']	   		   = json_encode($hasil);
 
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
+		die;
+		
 		$this->load->view('index/data_bank', $data);
 
 		// $hasil = null;
@@ -154,12 +158,27 @@ class Index extends CI_Controller
 	public function bayar()
 	{
 
-		$bayar = $this->s_pmb->getpendaftar();
+		$bayar = $this->s_pmb->getbank();
 		$jumlah = null;
 		foreach ($bayar as $key => $b) {
-			$bayar[$key]['jumlah'] = $this->s_pmb->getbayar($b['is_bayar']);
+			$bayar[$key]['jumlah'] = $this->s_pmb->getbayar($b['id_bank']);
 			$bayar[$key]['size'] = rand(10, 30);
 		}
+
+		$nilai = null;
+		foreach ($bayar as $b => $nl) {
+			$nilai[$b] = [
+				"name" 		=> $nl['nama_bank'],
+				"y"	   		=> $nl['jumlah'],
+			];
+		}
+		// echo '<pre>';
+		// print_r($nilai);
+		// echo '</pre>';
+		// die;	
+		$data['isbayar']     	   = $bayar;
+		$data['grafik']	   		   = json_encode($nilai);
+		$this->load->view('index/bayar', $data);
 	}
 }
 		// foreach ($jumlah as $j =>$d) {
