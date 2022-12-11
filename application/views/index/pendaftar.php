@@ -130,8 +130,14 @@
             </ul>
         </div>
         <div class="row">
+            <div class="col-md-6">
+                <div id="grafik"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="grafik2"></div>
+            </div>
         </div>
-        <div id="pendaftar"></div>
+
     </main>
 
 
@@ -178,40 +184,45 @@
         // Data retrieved from https://netmarketshare.com/
         // // Build the chart
         // let serial = series.push(json[0]);
-        Highcharts.chart('pendaftar', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Pendaftar Berdasarkan Prodi1'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}Pendaftar</b>'
-            },
-            accessibility: {
-                point: {
-                    valueSuffix: '%'
-                }
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
-                }
-            },
-            series: [{
-                name: 'Brands',
-                colorByPoint: true,
-                data: <?= $grafik ?>
-            }]
-        });
+        getgrafikpie('grafik', <?= $grafik ?>, 'Grafik Pendaftar Pilihan Prodi1');
+        getgrafikpie('grafik2', <?= $grafik2 ?>, 'Grafik Pendaftar Pilihan Prodi2');
+
+        function getgrafikpie(selector, data, title) {
+            Highcharts.chart(selector, {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: title
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y:.1f}Pendaftar</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'Pendaftar',
+                    colorByPoint: true,
+                    data: data
+                }]
+            });
+        }
     </script>
 </body>
 

@@ -24,6 +24,15 @@ class S_pmb extends CI_Model {
             }
             return $result;
         }
+        public function getjumlahpendaftar2($idprodi){
+            $result = 0;
+            $this->db->where('id_prodi2',$idprodi);
+            $data = $this->db->get('pendaftar')->result_array();
+            if(!empty($data)) {
+                $result = count($data);   
+            }
+            return $result;
+        }
 }
 
 ?>
