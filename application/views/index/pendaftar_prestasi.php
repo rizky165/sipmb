@@ -129,13 +129,8 @@
                 <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
             </ul>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="grafik"></div>
-            </div>
-            <div class="col-md-6">
-                <div id="grafik2"></div>
-            </div>
+        <div class=" row">
+            <div id="grafik"></div>
         </div>
 
     </main>
@@ -160,33 +155,13 @@
     <script src="<?= base_url('public') ?>/assets/js/plugins/pace.min.js"></script>
     <!-- Page specific javascripts-->
     <script type="text/javascript" src="<?= base_url('public') ?>/assets/js/plugins/chart.js"></script>
-
-    <!-- Google analytics script-->
-    <script type="text/javascript">
-        if (document.location.hostname == 'pratikborsadiya.in') {
-            (function(i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function() {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-72504830-1', 'auto');
-            ga('send', 'pageview');
-        }
-    </script>
     <script>
         // let data = "<?= $grafik ?>";
         // Data retrieved from https://netmarketshare.com/
         // // Build the chart
         // let serial = series.push(json[0]);
-        getgrafikpie('grafik', <?= $grafik ?>, 'Grafik Pendaftar Pilihan Prodi1');
-        getgrafikpie('grafik2', <?= $grafik2 ?>, 'Grafik Pendaftar Pilihan Prodi2');
-
+        getgrafikpie('grafik', <?= $grafik ?>, 'Grafik Prestasi Pendaftar ');
+        
         function getgrafikpie(selector, data, title) {
             Highcharts.chart(selector, {
                 chart: {
@@ -217,7 +192,7 @@
                     }
                 },
                 series: [{
-                    name: 'Pendaftar',
+                    name: 'Prestasi',
                     colorByPoint: true,
                     data: data
                 }]

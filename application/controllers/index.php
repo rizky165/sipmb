@@ -15,6 +15,7 @@ class Index extends CI_Controller
 		$this->load->view('index/index');
 	}
 
+	
 	public function pendaftar()
 	{
 		// $pendaftar = $this ->s_pmb->getpendaftar();
@@ -26,6 +27,7 @@ class Index extends CI_Controller
 			$prodi[$key]['jumlah'] = $this->s_pmb->getjumlahpendaftar($p['id_prodi']);
 			$prodi[$key]['jumlah2'] = $this->s_pmb->getjumlahpendaftar2($p['id_prodi']);
 			$prodi[$key]['size'] = rand(10, 30);
+		
 		}
 
 		/* grafik prodi 1 */
@@ -48,15 +50,81 @@ class Index extends CI_Controller
 				];
 		}
 
+
+
 		$data['pendaftar'] = $prodi;
 		$data['grafik']	   = json_encode($result);
 		$data['grafik2']   = json_encode($result2);
+		
 
 
 		$this->load->view('index/pendaftar', $data);
+
+		
+	}
+
+
+	public function pendaftar_prestasi()
+	{
+		$prestasi = $this->s_pmb->getprestasi();
+		$jumlah = null;
+		foreach ($prestasi as $key => $pr) {
+			$prestasi[$key]['total'] = $this->s_pmb->gettotalprestasi($pr['id_pendaftar']);
+			$prestasi[$key]['size'] = rand(10, 30);
+
+		}
+		echo '<pre>';
+		print_r($prestasi);
+		echo '</pre>';
+		die;
+
+
+		/* grafik prestasi */
+		$result3 = null;
+		foreach ($prestasi as $pr => $prd) {
+			$sliced = $pr ==
+				$result3[$pr] = [
+					"name" 		=> $prd['jenis_prestasi'],
+					"y"	   		=> $prd['total'],
+				];
+		}
+
+
+		$data['prestasi']  = $prestasi;
+		$data['grafik']	   = json_encode($result3);
+
+
+		$this->load->view('index/pendaftar_prestasi', $data);
+
+
+	}
+
+	public function jalur_masuk_pendaftar() {
+		$jalur = $this->s_pmb->getjalur();
+		$jumlah = null;
+		foreach ($jalur as $key => $j) {
+			$jalur[$key]['jumlah'] = $this->s_pmb->getjalurmasuk($j['id_jalur']);
+			$jalur[$key]['size'] = rand(10, 30);
+
+		}
+
+		/* grafik jalur masuk */
+		$result4 = null;
+		foreach ($jalur as $j => $jlr) {
+				$result4[$j] = [
+					"name" 		=> $jlr['nama_jalur'],
+					"y"	   		=> $jlr['jumlah'],
+				];
+		}
+		$data['jalur']     		   = $jalur;
+		$data['grafik']	   		   = json_encode($result4);
+		
+	
+		$this->load->view('index/jalur_masuk_pendaftar', $data);
+
+
 	}
 }
-
 
 		// foreach ($jumlah as $j =>$d) {
 		// 	$jumlah[$j] = rand(100,250);
