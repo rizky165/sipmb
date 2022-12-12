@@ -168,14 +168,11 @@ class Index extends CI_Controller
 		$nilai = null;
 		foreach ($bayar as $b => $nl) {
 			$nilai[$b] = [
-				"name" 		=> $nl['is_bayar'],
+				"name" 		=> $nl['id_bank'],
 				"y"	   		=> $nl['jumlah'],
 			];
 		}
-		echo '<pre>';
-		print_r($nilai);
-		echo '</pre>';
-		die;
+
 
 		$data['isbayar']     	   = $bayar;
 		$data['grafik']	   		   = json_encode($nilai);

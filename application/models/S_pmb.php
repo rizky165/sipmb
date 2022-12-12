@@ -37,7 +37,8 @@ class S_pmb extends CI_Model
 
     public  function getpembayar()
     {
-        $this->db->group_by('is_bayar');
+
+        $this->db->group_by('id_bank');
         return  $this->db->get('pendaftar')->result_array();
     }
 
