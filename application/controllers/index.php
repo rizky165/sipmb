@@ -134,11 +134,11 @@ class Index extends CI_Controller
 		$data['jalur']     		   = $bank;
 		$data['grafik']	   		   = json_encode($hasil);
 
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
-		die;
-		
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
+		// die;
+
 		$this->load->view('index/data_bank', $data);
 
 		// $hasil = null;
@@ -158,7 +158,7 @@ class Index extends CI_Controller
 	public function bayar()
 	{
 
-		$bayar = $this->s_pmb->getbank();
+		$bayar = $this->s_pmb->getpembayar();
 		$jumlah = null;
 		foreach ($bayar as $key => $b) {
 			$bayar[$key]['jumlah'] = $this->s_pmb->getbayar($b['id_bank']);
@@ -168,14 +168,15 @@ class Index extends CI_Controller
 		$nilai = null;
 		foreach ($bayar as $b => $nl) {
 			$nilai[$b] = [
-				"name" 		=> $nl['nama_bank'],
+				"name" 		=> $nl['is_bayar'],
 				"y"	   		=> $nl['jumlah'],
 			];
 		}
-		// echo '<pre>';
-		// print_r($nilai);
-		// echo '</pre>';
-		// die;	
+		echo '<pre>';
+		print_r($nilai);
+		echo '</pre>';
+		die;
+
 		$data['isbayar']     	   = $bayar;
 		$data['grafik']	   		   = json_encode($nilai);
 		$this->load->view('index/bayar', $data);

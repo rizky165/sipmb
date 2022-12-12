@@ -113,6 +113,7 @@
                     <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Prestasi</a></li>
                     <li><a class="treeview-item" href="<?= site_url('index/jalur_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Jalur Masuk</a></li>
                     <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i> Bank</a></li>
+                    <li><a class="treeview-item" href="<?= site_url('index/bayar') ?>"><i class="icon fa fa-circle-o"></i> Pembayaran</a></li>
                 </ul>
             </li>
             <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li>
