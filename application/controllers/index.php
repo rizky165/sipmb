@@ -172,6 +172,10 @@ class Index extends CI_Controller
 				"y"	   		=> $nl['jumlah'],
 			];
 		}
+		echo '<pre>';
+		print_r($nilai);
+		echo '</pre>';
+		die;
 
 
 		$data['isbayar']     	   = $bayar;
