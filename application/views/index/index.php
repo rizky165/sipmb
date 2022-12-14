@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-DOXMLfHhQkvFFp+rWTZwVlPVqdIhpDVYT9csOnHSgWQWPX0v5MCGtjCJbY6ERspU" crossorigin="anonymous">
     <!-- Navbar-->
     
-    <header class="app-header"><a class="app-header__logo" href="index.html">Vali</a>
+    <header class="app-header"><a class="app-header__logo" href="index.html">Amd Academy</a>
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       
       <!-- Navbar Right Menu-->
@@ -91,9 +91,9 @@
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="">
+      <div class="app-sidebar__user">
         <div>
-          <p class="app-sidebar__user-name">John</p>
+          <p class="app-sidebar__user-name">Rizky Fachrieza Yalvinsya</p>
           <p class="app-sidebar__user-designation"></p>
         </div>
       </div>
@@ -101,25 +101,24 @@
         <li><a class="app-menu__item active" href="<?= site_url('index/index') ?>"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="<?= site_url('index/pendaftar') ?>"><i class="icon fa fa-circle-o"></i>Pendaftar</a></li>
-            <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i>Prestasi</a></li>
+            <li><a class="treeview-item" href="<?= site_url('index/pendaftar') ?>"><i class="icon fa fa-circle-o"></i>Prodi</a></li>
+            <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i>Jenis Prestasi</a></li>
             <li><a class="treeview-item" href="<?= site_url('index/jalur_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> jalur Masuk</a></li>
-            <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i> Bank</a></li>
-            <li><a class="treeview-item" href="<?= site_url('index/bayar') ?>"><i class="icon fa fa-circle-o"></i> Pembayaran</a></li>
+            <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i>Pendapatan Bank</a></li>
+            <li><a class="treeview-item" href="<?= site_url('index/bayar') ?>"><i class="icon fa fa-circle-o"></i>Status Pembayaran</a></li>
           </ul>
         </li>
-        <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li>
       </ul>
     </aside>
     <main class="app-content">
       <div class="app-title">
         <div>
           <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
-          <p>A free and open source Bootstrap 4 admin template</p>
+          <p></p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-          <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="<?= site_url('index/index')?>">Dashboard</a></li>
         </ul>
       </div>
       <div class="row">
@@ -220,6 +219,7 @@
       
       var ctxp = $("#pieChartDemo").get(0).getContext("2d");
       var pieChart = new Chart(ctxp).Pie(pdata);
+    
     </script>
     <!-- Google analytics script-->
     <script type="text/javascript">

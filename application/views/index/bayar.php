@@ -99,9 +99,9 @@
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-        <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="">
+        <div class="app-sidebar__user">
             <div>
-                <p class="app-sidebar__user-name">John Doe</p>
+                <p class="app-sidebar__user-name">Rizky Fachrieza Yalvinsya</p>
                 <p class="app-sidebar__user-designation"></p>
             </div>
         </div>
@@ -109,20 +109,19 @@
             <li><a class="app-menu__item active" href="<?= site_url('index/index') ?>"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
             <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Chart</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a class="treeview-item" href="<?= site_url('index/pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Pendaftar</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Prestasi</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/ r_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Jalur Masuk</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i> Bank</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/bayar') ?>"><i class="icon fa fa-circle-o"></i> Pembayaran</a></li>
+                    <li><a class="treeview-item" href="<?= site_url('index/pendaftar') ?>"><i class="icon fa fa-circle-o"></i>Prodi</a></li>
+                    <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i>Jenis Prestasi</a></li>
+                    <li><a class="treeview-item" href="<?= site_url('index/jalur_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> jalur Masuk</a></li>
+                    <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i>Pendapatan Bank</a></li>
+                    <li><a class="treeview-item" href="<?= site_url('index/bayar') ?>"><i class="icon fa fa-circle-o"></i>Status Pembayaran</a></li>
                 </ul>
             </li>
-            <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li>
         </ul>
     </aside>
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
+                <h1><i class="fa fa-dashboard"></i> Dashboard </h1>
                 <p></p>
             </div>
             <ul class="app-breadcrumb breadcrumb">
@@ -131,12 +130,8 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col">
-                <div id="grafik"></div>
-            </div>
+            <div id="container"></div>
         </div>
-        <div></div>
-
     </main>
 
 
@@ -155,6 +150,12 @@
     <script src="<?= base_url('public') ?>/assets/js/popper.min.js"></script>
     <script src="<?= base_url('public') ?>/assets/js/bootstrap.min.js"></script>
     <script src="<?= base_url('public') ?>/assets/js/main.js"></script>
+
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
     <!-- The javascript plugin to display page loading on top-->
     <script src="<?= base_url('public') ?>/assets/js/plugins/pace.min.js"></script>
     <!-- Page specific javascripts-->
@@ -179,47 +180,50 @@
         }
     </script>
     <script>
-        // let data = "<?= $grafik ?>";
-        // Data retrieved from https://netmarketshare.com/
-        // // Build the chart
-        // let serial = series.push(json[0]);
-        getgrafikpie('grafik', <?= $grafik ?>, 'Grafik Pembayaran Pendaftar');
-    
+        let data = <?= $grafik['data'] ?>;
+        let categories = <?= $grafik['categories'] ?>;
+        let title = "Grafik Status Pembayaran";
+        let subtitle = "";
 
-        function getgrafikpie(selector, data, title) {
+        getGrafikColum('container', data, categories, title, subtitle);
+
+        function getGrafikColum(selector, data, categories, title, subtitle) {
             Highcharts.chart(selector, {
                 chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+                    type: 'column'
                 },
                 title: {
                     text: title
                 },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.y:.1f}Pembayaran</b>'
+                subtitle: {
+                    text: subtitle
                 },
-                accessibility: {
-                    point: {
-                        valueSuffix: '%'
+                xAxis: {
+                    categories: categories,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: title
                     }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} Pendaftar</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
                 },
                 plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: false
-                        },
-                        showInLegend: true
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
                     }
                 },
-                series: [{
-                    name: 'Pendaftar',
-                    colorByPoint: true,
-                    data: data
-                }]
+                series: data
+
             });
         }
     </script>

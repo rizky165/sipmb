@@ -99,25 +99,25 @@
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-        <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="">
-            <div>
-                <p class="app-sidebar__user-name">John Doe</p>
-                <p class="app-sidebar__user-designation"></p>
+            <div class="app-sidebar__user">
+                <div>
+                    <p class="app-sidebar__user-name">Rizky Fachrieza Yalvinsya</p>
+                    <p class="app-sidebar__user-designation"></p>
+                </div>
             </div>
-        </div>
-        <ul class="app-menu">
-            <li><a class="app-menu__item active" href="<?= site_url('index/index') ?>"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
-            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Chart</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a class="treeview-item" href="<?= site_url('index/pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Pendaftar</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Prestasi</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/jalur_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> Jalur Masuk</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i> Bank</a></li>
-                    <li><a class="treeview-item" href="<?= site_url('index/bayar') ?>"><i class="icon fa fa-circle-o"></i> Pembayaran</a></li>
-                </ul>
-            </li>
-            <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li>
-        </ul>
+            <ul class="app-menu">
+                <li><a class="app-menu__item active" href="<?= site_url('index/index') ?>"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Chart</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a class="treeview-item" href="<?= site_url('index/pendaftar') ?>"><i class="icon fa fa-circle-o"></i>Prodi</a></li>
+                        <li><a class="treeview-item" href="<?= site_url('index/pendaftar_prestasi') ?>" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i>Jenis Prestasi</a></li>
+                        <li><a class="treeview-item" href="<?= site_url('index/jalur_masuk_pendaftar') ?>"><i class="icon fa fa-circle-o"></i> jalur Masuk</a></li>
+                        <li><a class="treeview-item" href="<?= site_url('index/data_bank') ?>"><i class="icon fa fa-circle-o"></i>Pendapatan Bank</a></li>
+                        <li><a class="treeview-item" href="<?= site_url('index/bayar') ?>"><i class="icon fa fa-circle-o"></i>Status Pembayaran</a></li>
+                    </ul>
+                </li>
+                
+            </ul>
     </aside>
     <main class="app-content">
         <div class="app-title">
@@ -131,8 +131,8 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col-md">
-                <div id="grafik"></div>
+            <div class="col">
+                <div id="container"></div>
             </div>
         </div>
         <div></div>
@@ -160,65 +160,94 @@
     <!-- Page specific javascripts-->
     <script type="text/javascript" src="<?= base_url('public') ?>/assets/js/plugins/chart.js"></script>
 
-    <!-- Google analytics script-->
-    <script type="text/javascript">
-        if (document.location.hostname == 'pratikborsadiya.in') {
-            (function(i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function() {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-72504830-1', 'auto');
-            ga('send', 'pageview');
-        }
-    </script>
-    <script>
-        // let data = "<?= $grafik ?>";
-        // Data retrieved from https://netmarketshare.com/
-        // // Build the chart
-        // let serial = series.push(json[0]);
-        getgrafikpie('grafik', <?= $grafik ?>, 'Grafik Pendapatan Bank');
 
-        function getgrafikpie(selector, data, title) {
-            Highcharts.chart(selector, {
+    <script>
+        let data = <?= $grafik['data'] ?>;
+        let categories = <?= $grafik['categories'] ?>;
+        let title = "Grafik Pendapatan Bank";
+
+        let subtitle = "Grafik Pendapatan";
+        getGrafik('container', data, categories, title, subtitle);
+
+        function getGrafik(selector, data, categories, title, subtitle) {
+            var chart = Highcharts.chart(selector, {
+
                 chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+                    type: 'column'
                 },
+
                 title: {
                     text: title
                 },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.y:.0f} Pendapatan Pendaftar</b>'
+
+                subtitle: {
+                    text: subtitle
                 },
-                accessibility: {
-                    point: {
-                        valueSuffix: '%'
+
+                legend: {
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    layout: 'vertical'
+                },
+
+                xAxis: {
+                    categories: categories,
+                    labels: {
+                        x: -10
                     }
                 },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: false
+
+                yAxis: {
+                    allowDecimals: false,
+                    title: {
+                        text: title
+                    }
+                },
+
+                series: data,
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
                         },
-                        showInLegend: true
-                    }
-                },
-                series: [{
-                    name: 'Bank',
-                    colorByPoint: true,
-                    data: data
-                }]
+                        chartOptions: {
+                            legend: {
+                                align: 'center',
+                                verticalAlign: 'bottom',
+                                layout: 'horizontal'
+                            },
+                            yAxis: {
+                                labels: {
+                                    align: 'left',
+                                    x: 0,
+                                    y: -5
+                                },
+                                title: {
+                                    text: title
+                                }
+                            },
+                            subtitle: {
+                                text: subtitle
+                            },
+                            credits: {
+                                enabled: false
+                            }
+                        }
+                    }]
+                }
+            });
+
+            document.getElementById('small').addEventListener('click', function() {
+                chart.setSize(400);
+            });
+
+            document.getElementById('large').addEventListener('click', function() {
+                chart.setSize(600);
+            });
+
+            document.getElementById('auto').addEventListener('click', function() {
+                chart.setSize(null);
             });
         }
     </script>

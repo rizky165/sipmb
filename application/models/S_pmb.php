@@ -31,15 +31,15 @@ class S_pmb extends CI_Model
 
     public  function getbank()
     {
-        $this->db->group_by('id_bank');
-        return  $this->db->get('bank')->result_array();
+
+        $data  = $this->db->get('bank')->result_array();
+        return $data;
     }
 
     public  function getpembayar()
     {
-        $
-        $this->db->group_by('id_bank');
-        return  $this->db->get('pendaftar')->result_array();
+        $data = $this->db->get('bank')->result_array();
+        return $data;
     }
 
 
@@ -90,26 +90,48 @@ class S_pmb extends CI_Model
         return $result;
     }
 
-    public function getdaftarbank($id_bank)
+    public function getdaftarbank()
     {
-        $result = 0;
-        $this->db->where('id_bank', $id_bank);
-        $this->db->where('nominal_bayar', 150000);
+        $this->db->select(['COUNT(pendaftar.id_pendaftar) as jumlah','SUM(pendaftar.nominal_bayar) AS total',
+        'pendaftar.id_bank','bank.nama_bank']);
+        $this->db->join('bank', 'pendaftar.id_bank = bank.id_bank');
+        $this->db->group_by(['id_bank']);
         $data = $this->db->get('pendaftar')->result_array();
-        if (!empty($data)) {
-            $result = count($data);
-        }
-        return $result;
+        return $data;
     }
 
-    public function getbayar($id_bank)
+
+    public function getdaftarbayar()
     {
-        $result = 0;
-        $this->db->where('id_bank ', $id_bank);
+        $this->db->select(['COUNT(pendaftar.id_pendaftar) as jumlah','SUM(pendaftar.nominal_bayar) 
+        AS pendapatan','pendaftar.id_bank','pendaftar.is_bayar','bank.nama_bank']);
+        $this->db->join('bank', 'pendaftar.id_bank = bank.id_bank');
+        $this->db->where_in('id_jalur',[2, 3]);
+        $this->db->group_by(['id_bank','is_bayar']);
         $data = $this->db->get('pendaftar')->result_array();
-        if (!empty($data)) {
-            $result = count($data);
-        }
-        return $result;
+        return $data;
     }
+   
+    // public function query_coba()
+    // {
+    //     return $this->db->query("SELECT 
+    //     COUNT(id_pendaftar) AS jumlah, 
+    //     SUM(pendaftar.nominal_bayar) AS total, 
+    //     'pendaftar'.'id_bank','pendaftar'.'is_bayar', 'bank'.'nama_bank' 
+    //     FROM 'pendaftar'
+    //     JOIN 'bank' ON 'pendaftar'.'id_bank' = 'bank'.'id_bank' 
+    //     WHERE 'id_jalur' IN(2, 3)
+    //     GROUP BY 'id_jalur','is_bayar'")->result();
+    // }
+   
+    // public function getbayar($id_bank)
+    // {
+    //     $result = 0;
+    //     $this->db->where('id_bank ', $id_bank);
+    //     $data = $this->db->get('pendaftar')->result_array();
+    //     if (!empty($data)) {
+    //         $result = count($data);
+    //     }
+    //     return $result;
+    // }
 }

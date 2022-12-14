@@ -7,12 +7,14 @@ class Index extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->helper('url');
 		$this->load->model('S_pmb', 's_pmb');
 	}
 
 	public function index()
 	{
-		$this->load->view('index/index');
+		$data['title'] = 'Dashboard';
+		$this->load->view('index/index', $data);
 	}
 
 
@@ -50,7 +52,6 @@ class Index extends CI_Controller
 		}
 
 
-
 		$data['pendaftar'] = $prodi;
 		$data['grafik']	   = json_encode($result);
 		$data['grafik2']   = json_encode($result2);
@@ -86,11 +87,13 @@ class Index extends CI_Controller
 		$data['grafik']	   = json_encode($result3);
 
 
+
 		$this->load->view('index/pendaftar_prestasi', $data);
 	}
 
 	public function jalur_masuk_pendaftar()
 	{
+		$data['title'] = 'Grafik Berdasarkan Bank';
 		$jalur = $this->s_pmb->getjalur();
 		$jumlah = null;
 		foreach ($jalur as $key => $j) {
@@ -107,7 +110,8 @@ class Index extends CI_Controller
 			];
 		}
 		$data['jalur']     		   = $jalur;
-		$data['grafik']	   		   = json_encode($result4);
+		$data['grafik']	 		   = json_encode($result4);
+
 
 
 		$this->load->view('index/jalur_masuk_pendaftar', $data);
@@ -116,73 +120,111 @@ class Index extends CI_Controller
 	public function data_bank()
 	{
 
-		$bank = $this->s_pmb->getbank();
-		$jumlah = null;
-		foreach ($bank as $key => $b) {
-			$bank[$key]['jumlah'] = $this->s_pmb->getdaftarbank($b['id_bank']);
-			$bank[$key]['size'] = rand(10, 30);
+		$data['title'] = 'Grafik Pendapatan masing-masing Bank';
+		$daftarbank = $this->s_pmb->getbank();
+		$daftarpembayar = $this->s_pmb->getdaftarbayar();
+
+
+		$categories = null;
+		$pendapatan_bank = null;
+		$total = 0;
+		foreach ($daftarbank as $i => $d) {
+			$categories[] = $d['nama_bank'];
+			foreach ($daftarpembayar as $key => $value) {
+				if ($d['id_bank'] == $value['id_bank']) {
+					if ($value['is_bayar'] == 1) {
+						$total += $value['pendapatan'];
+						$pendapatan_bank[] = intval($value['pendapatan']);
+					} 
+				}
+			}
 		}
 
-		$hasil = null;
-		foreach ($bank as $b => $bk) {
-			$hasil[$b] = [
-				"name" 		=> $bk['nama_bank'],
-				"y"	   		=> $bk['jumlah'],
-			];
-		}
+		$result[] = [
+			'name' => 'Pendapatan',
+			'data' => $pendapatan_bank,
+		];
 
-		$data['jalur']     		   = $bank;
-		$data['grafik']	   		   = json_encode($hasil);
-
+		$data['subtitle']   = ('Total pendaftar :' . $total);
+		$grafik['data']   	  = json_encode($result, 1);
+		$grafik['categories'] = json_encode($categories);
+		$data['grafik']       = $grafik;
+		
 		// echo '<pre>';
-		// print_r($data);
+		// print_r($grafik['categories']);
 		// echo '</pre>';
 		// die;
 
 		$this->load->view('index/data_bank', $data);
-
-		// $hasil = null;
-		// foreach ($bank as $b => $bk) {
-		// 	$hasil[$b] = [
-		// 			"name" 		=> $bk['nama_bank'],
-		// 			"y"	   		=> $bk['jumlah'],
-		// 		];
-		// }
-
-
-		// $data['bank']     		   = $bank;
-		// $data['grafik']	   		   = json_encode($hasil);
-		// $this->load->view('index/data_bank', $data);
 	}
+
 
 	public function bayar()
 	{
 
-		$bayar = $this->s_pmb->getpembayar();
-		$jumlah = null;
-		foreach ($bayar as $key => $b) {
-			$bayar[$key]['jumlah'] = $this->s_pmb->getbayar($b['id_bank']);
-			$bayar[$key]['size'] = rand(10, 30);
+		$data['title'] = 'Grafik Berdasarkan Bank';
+		$daftarbank = $this->s_pmb->getbank();
+		$daftarpembayar = $this->s_pmb->getdaftarbayar();
+
+
+		$categories = null;
+		$lunas = null;
+		$belumlunas = null;
+		$sumtotal = 0;
+		foreach ($daftarbank as $i => $d) {
+			$categories[] = $d['nama_bank'];
+			foreach ($daftarpembayar as $key => $value) {
+				if ($d['id_bank'] == $value['id_bank']) {
+					if ($value['is_bayar'] == 1) {
+						$sumtotal += $value['jumlah'];
+						$lunas[] = intval($value['jumlah']);
+					} else {
+						$sumtotal += $value['jumlah'];
+						$belumlunas[] = intval($value['jumlah']);
+					}
+				}
+			}
 		}
+		$result[] = [
+			'name' => 'lunas',
+			'data' => $lunas,
+		];
+		$result[] = [
+			'name' => 'belum lunas',
+			'data' => $belumlunas,
+		];
 
-		$nilai = null;
-		foreach ($bayar as $b => $nl) {
-			$nilai[$b] = [
-				"name" 		=> $nl['id_bank'],
-				"y"	   		=> $nl['jumlah'],
-			];
-		}
-		echo '<pre>';
-		print_r($nilai);
-		echo '</pre>';
-		die;
+		// echo '<pre>';
+		// print_r($result);
+		// echo '</pre>';
+		// die;
+
+		$data['subtitle'] 	  = ('Total pendaftar :' . $sumtotal);
+		$grafik['data']   	  = json_encode($result, 1);
+		$grafik['categories'] = json_encode($categories);
+		$data['grafik']       = $grafik;
 
 
-		$data['isbayar']     	   = $bayar;
-		$data['grafik']	   		   = json_encode($nilai);
 		$this->load->view('index/bayar', $data);
+
+		// echo '<pre>';
+		// print_r($grafik['categories']);
+		// echo '</pre>';
+		// die;
+
 	}
+
+	// $data['bayar']     	       = $daftarbayar;
+	// $data['grafik']	   		   = json_encode($nilai);
+
+	// echo '<pre>';
+	// print_r($data);
+	// echo '</pre>';
+	// die;
+
+
 }
+
 		// foreach ($jumlah as $j =>$d) {
 		// 	$jumlah[$j] = rand(100,250);
 		// 
