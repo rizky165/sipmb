@@ -14,7 +14,8 @@ class S_pmb extends CI_Model
 
     public  function getprodi()
     {
-        return  $this->db->get('prodi')->result_array();
+        $data = $this->db->get('prodi')->result_array();
+        return $data;
     }
 
     public  function getjalur()
@@ -42,7 +43,7 @@ class S_pmb extends CI_Model
         return $data;
     }
 
-
+ 
     public function getjumlahpendaftar($idprodi)
     {
         $result = 0;
@@ -112,26 +113,24 @@ class S_pmb extends CI_Model
         return $data;
     }
    
-    // public function query_coba()
-    // {
-    //     return $this->db->query("SELECT 
-    //     COUNT(id_pendaftar) AS jumlah, 
-    //     SUM(pendaftar.nominal_bayar) AS total, 
-    //     'pendaftar'.'id_bank','pendaftar'.'is_bayar', 'bank'.'nama_bank' 
-    //     FROM 'pendaftar'
-    //     JOIN 'bank' ON 'pendaftar'.'id_bank' = 'bank'.'id_bank' 
-    //     WHERE 'id_jalur' IN(2, 3)
-    //     GROUP BY 'id_jalur','is_bayar'")->result();
-    // }
-   
-    // public function getbayar($id_bank)
-    // {
-    //     $result = 0;
-    //     $this->db->where('id_bank ', $id_bank);
-    //     $data = $this->db->get('pendaftar')->result_array();
-    //     if (!empty($data)) {
-    //         $result = count($data);
-    //     }
-    //     return $result;
-    // }
+    public function getdataprodi()
+    {
+        $this->db->select(['COUNT(id_pendaftar) as jumlah','id_prodi2','jenjang','Concat(jenjang," - ",nama_prodi) as nama_prodi']);
+        $this->db->join('prodi', 'pendaftar.id_prodi2 = prodi.id_prodi');
+        $this->db->group_by(['id_prodi2']);
+        $data = $this->db->get('pendaftar')->result_array();
+        return $data;
+    }
+
+    public function getdataprodi1()
+    {
+        $this->db->select(['COUNT(id_pendaftar) as jumlah','id_prodi1','jenjang','Concat(jenjang," - ",nama_prodi) as nama_prodi']);
+        $this->db->join('prodi', 'pendaftar.id_prodi1 = prodi.id_prodi');
+        $this->db->group_by(['id_prodi1']);
+        $data = $this->db->get('pendaftar')->result_array();
+        return $data;
+    }
+
+
+
 }

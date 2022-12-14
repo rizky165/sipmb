@@ -23,44 +23,46 @@ class Index extends CI_Controller
 		// $pendaftar = $this ->s_pmb->getpendaftar();
 		// var_dump($pendaftar);
 
-		$prodi = $this->s_pmb->getprodi();
-		$jumlah = null;
-		foreach ($prodi as $key => $p) {
-			$prodi[$key]['jumlah'] = $this->s_pmb->getjumlahpendaftar($p['id_prodi']);
-			$prodi[$key]['jumlah2'] = $this->s_pmb->getjumlahpendaftar2($p['id_prodi']);
-			$prodi[$key]['size'] = rand(10, 30);
-		}
+		{
 
-		/* grafik prodi 1 */
-		$result = null;
-		foreach ($prodi as $p => $prod) {
-			$sliced = $p ==
+			$prodi = $this->s_pmb->getprodi();
+			$pendaftar = $this->s_pmb->getdataprodi1();
+			$result = null;
+			$jumlah = 0;
+			$max = 0;
+			foreach ($pendaftar as $key=> $p) {
+				if ($max < $p['jumlah']) {
+					$max = $p['jumlah'];
+					$posisi = $key;
+				}
+			}
+	
+			/* grafik prodi 2 */
+			foreach ($pendaftar as $p => $prod) {
+				$jumlah += $prod['jumlah'];
 				$result[$p] = [
 					"name" 		=> $prod['nama_prodi'],
-					"y"	   		=> $prod['jumlah'],
+					"jumlah"	=> intval($prod['jumlah']),
+					"y"			=> intval($prod['jumlah']),
 				];
+						
+			}
+	
+			
+			$grafik['subtitle']   = json_encode($jumlah);
+			$grafik['data']   	  = json_encode($result);
+			$data['grafik']       = $grafik;
+	
+	
+			// echo '<pre>';
+			// print_r($result);
+			// echo '</pre>';
+			// die;
+			$this->load->view('index/pendaftar', $data);
 		}
-
-		/* grafik prodi 2 */
-		$result2 = null;
-		foreach ($prodi as $p => $prod) {
-			$sliced = $p ==
-				$result2[$p] = [
-					"name" 		=> $prod['nama_prodi'],
-					"y"	   		=> $prod['jumlah2'],
-				];
-		}
-
-
-		$data['pendaftar'] = $prodi;
-		$data['grafik']	   = json_encode($result);
-		$data['grafik2']   = json_encode($result2);
-
-
-		$this->load->view('index/pendaftar', $data);
 	}
 
-
+	
 	public function pendaftar_prestasi()
 	{
 		$prestasi = $this->s_pmb->getprestasi();
@@ -135,7 +137,7 @@ class Index extends CI_Controller
 					if ($value['is_bayar'] == 1) {
 						$total += $value['pendapatan'];
 						$pendapatan_bank[] = intval($value['pendapatan']);
-					} 
+					}
 				}
 			}
 		}
@@ -149,7 +151,7 @@ class Index extends CI_Controller
 		$grafik['data']   	  = json_encode($result, 1);
 		$grafik['categories'] = json_encode($categories);
 		$data['grafik']       = $grafik;
-		
+
 		// echo '<pre>';
 		// print_r($grafik['categories']);
 		// echo '</pre>';
@@ -222,13 +224,43 @@ class Index extends CI_Controller
 	// echo '</pre>';
 	// die;
 
+	public function pendaftar2()
+	{
 
-}
+		$prodi = $this->s_pmb->getprodi();
+		$pendaftar = $this->s_pmb->getdataprodi();
+		$result = null;
+		$jumlah = 0;
+		$max = 0;
+		foreach ($pendaftar as $key=> $p) {
+			if ($max < $p['jumlah']) {
+				$max = $p['jumlah'];
+				$posisi = $key;
+			}
+		}
 
-		// foreach ($jumlah as $j =>$d) {
-		// 	$jumlah[$j] = rand(100,250);
-		// 
+		/* grafik prodi 2 */
+		foreach ($pendaftar as $p => $prod) {
+			$jumlah += $prod['jumlah'];
+			$result[$p] = [
+				"name" 		=> $prod['nama_prodi'],
+				"jumlah"	=> intval($prod['jumlah']),
+				"y"			=> intval($prod['jumlah']),
+			];
+					
+		}
+
+		
+		$grafik['subtitle']   = json_encode($jumlah);
+		$grafik['data']   	  = json_encode($result);
+		$data['grafik']       = $grafik;
+
+
 		// echo '<pre>';
-		// print_r($data);
+		// print_r($result);
 		// echo '</pre>';
 		// die;
+		$this->load->view('index/pendaftar2', $data);
+	}
+
+}
